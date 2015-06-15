@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Weather API Demo</title>
+
+	<script type = "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type = "text/javascript">
+	$(document).ready(function() {
+		$("form").submit(function(){
+			$.get($(this).attr('action') + "?callback=?", $(this).serialize(), function(dojo){
+			var temp_in_F = dojo.data.current_condition[0].temp_F;
+			var temp_in_C = dojo.data.current_condition[0].temp_C;
+			var wind = dojo.data.current_condition[0].windspeedMiles;
+			var desc = dojo.data.current_condition[0].weatherDesc[0].value;
+			$('#temp1').append("Current temp in F:  " + temp_in_F + " degrees");
+			$('#temp2').append("Current temp in C:  " + temp_in_C + " degrees");
+			$('#wind').append("Current wind speed:  " + wind + " mph");
+			$('#desc').text("Weather Description:  " + desc);
+			}, 'json');
+			return false;
+		});
+	});
+	</script>
+</head>
+<body>
+	<form action = 'http://api.worldweatheronline.com/free/v2/weather.ashx'  method = 'get'>
+		<select name = 'q'>
+			<option value = '94303' > Mountain View</option>
+			<option value = '95050' > Santa Clara</option>
+			<option value = '77005' > Houston</option>
+		</select>
+		<input type = 'hidden' name = 'key' value = '1fa58af4c1c55914e13044bf90a98'>
+		<input type = 'hidden' name = 'format' value = 'json'>
+		<input type = 'submit' value = 'Submit'>
+	</form>
+	<h3>Info</h3>
+	<div id = 'temp1' ></div>
+	<div id = 'temp2' ></div>
+	<div id = 'wind' ></div>
+ 	<div id = 'desc' ></div>
+</body>
+</html>
